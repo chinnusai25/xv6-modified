@@ -1,0 +1,83 @@
+
+COMMANDS TO EXECUTE:
+
+$ make
+
+To run RR/DEFAULT:
+$ make qemu
+
+To run FCFS,PRIORITY,MLFQ
+$ make clean
+$ make qemu SCHEDULER=FCFS              (OR)
+$ make qemu SCHEDULER=PBS               (OR)
+$ make qemu SCHEDULER=MLFQ
+
+-----------------------------------------------------------------------
+
+THe new system calls which are added to xv6 basic code.
+
+1)int waitx(int* wtime, int* rtime) :
+
+    The two arguments are pointers to integers to which waitx will assign the total
+    number of clock ticks during which process was waiting and total number of clock
+    ticks when the process was running.
+
+    Here waiting time & running time of a process are calculated.
+
+2)int set_priority(int pid,int priority):
+
+    The PRIORITY of the process of given pid is updated with the new priority which is passed as ARGUMENT
+
+3)int getpinfo(struct proc_stat*,int pid):
+
+    Here the information of process of given pid are stored in proc_stat* argument
+    ​
+
+The new commands added to xv6 basic code.
+
+1)time :
+
+    "time" command ,which uses waitx and prints the runtime and waittime of command passed as argument
+
+2)ps :
+    
+    "ps" command to print some information processes which are in "SLEEPING","RUNNABLE" and "RUNNING" states which uses cps system call
+
+3)set_pr :
+
+    "set_pr" command which uses set_priority system call , the arguments passed are pid and new priority.
+
+4)pr_create :
+
+    "pr_create" command is to create a process and runs for a long time doing some random calculation,this is created to check the scheduling policies.
+
+5)getpinfo :        
+    
+    "getpinfo" commmand is used to print the process info of the pid which is passed as argument.
+
+6)new :
+    
+    "new" command is also a tester command
+
+
+The new scheduling process added in this xv6 basic code.
+
+1)First come first served (FCFS): 
+
+    The simplest scheduling algorithm. FCFS simply queues processes in the order that they arrive in the ready queue.
+    The scheduling overhead due to using this policy is minimal since context switches only occur upon process termination,
+    and no reorganization of the process queue is required.
+
+2)The priority scheduling algorithm (PRIORITY):
+
+    It  represents a preemptive policy that executes processes based on their priority. 
+    The scheduling policy first select the runnable process with the lowest value of priority and executes it, 
+    after that it finds the one with the seconds lowest value of priority and excutes it and so on, until we have 
+    finished all the processes. 
+
+3) multi-level feedback queue (MLFQ) :
+
+    -Five priority levels, numbered from 0 (highest) down to 4 (lowest).
+    -The highest priority ready process is scheduled to run whenever the previously running process exits, sleeps, 
+        or otherwise yields the CPU.
+    -When a new process arrives, it should start at priority 0.
